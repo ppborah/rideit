@@ -20,7 +20,7 @@ const authentication = async function (req, res, next) {
 
     jwt.verify(
       token,
-      "Group12",
+      "Geekybytes",
       { ignoreExpiration: true },
       function (error, decodedToken) {
         // if token is invalid
@@ -53,21 +53,19 @@ const authentication = async function (req, res, next) {
   }
 };
 
-//=========================================== authoriZation ============================================================================================
+//=========================================== authorisation ============================================================================================
 
-const authorization = async function (req, res, next) {
+const authorisation = async function (req, res, next) {
   try {
     let userName = req.params.userName;
 
-    let userId = await userModel.findOne({ userName: userName });
-    //📌 AUTHORIZATION:
-    if (req.userId.toString() !== userId.toString()) {
+    let userDoc = await userModel.findOne({ userName: userName });
+    if (req.userId !== userDoc.userId) {
       return res.status(403).send({
         status: false,
-        message: `Authorization failed; You are logged in as ${req.userId}, not as ${userId}`,
+        message: `Authorisation failed; You are logged in as ${req.userId}, not as ${userId}`,
       });
     }
-
     next();
   } catch (err) {
     res.status(500).send({
@@ -80,4 +78,4 @@ const authorization = async function (req, res, next) {
 
 //======================================================================================================================================================
 
-module.exports = { authentication, authorization };
+module.exports = { authentication, authorisation };

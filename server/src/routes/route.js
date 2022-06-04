@@ -1,19 +1,21 @@
 const express = require("express");
-const { authentication, authorization } = require("../middlewares/auth");
+const { authentication, authorisation } = require("../middlewares/auth");
 const {
   createUser,
   loginUser,
   getUser,
-  updateUserProfile,
+  updateUser,
   deleteUser,
 } = require("../controllers/userController");
 const {
   createBlog,
-  getBlog,
-  feed,
+  getFeed,
+  getBlogById,
+  getBlogOwn,
   likeBlog,
   updateBlog,
   deleteBlog,
+  getBlogById,
 } = require("../controllers/blogController");
 
 const router = express.Router();
@@ -27,33 +29,27 @@ router.post("/create-user", createUser);
 router.post("/login-user", loginUser);
 
 //fetch user profile
-router.get("/:userName", authentication, authorization, getUser);
+router.get("/:userName", authentication, authorisation, getUser);
 
 //update user profile
-router.post("/update-user/:userName", authentication, authorization, updateUserProfile);
+router.post(
+  "/update-user/:userName",
+  authentication,
+  authorisation,
+  updateUser
+);
 
 //delete user profile
-router.delete("/:userName", authentication, authorization, deleteUser);
+router.delete("/:userName", authentication, authorisation, deleteUser);
 
 // blog APIs
-
-//create blog
-router.post("/create-blog", authentication, authorization, createBlog);
-
-//like a blog
+router.get("/", getFeed);
+router.get("/:blogId", getBlogById);
+router.get("/:blogId", getBlogOwn);
 router.post("/like-blog", authentication, likeBlog);
-
-//fetch a blog
-router.get("/:blogId", getBlog);
-
-//fetch all blogs
-router.get("/", feed);
-
-//update a blog
-router.post("/:blogId", authentication, authorization, updateBlog);
-
-//delete a blog
-router.delete("/:blogId", authentication, authorization, deleteBlog);
+router.post("/create-blog", authentication, authorisation, createBlog);
+router.post("/:blogId", authentication, authorisation, updateBlog);
+router.delete("/:blogId", authentication, authorisation, deleteBlog);
 
 router.all("/**", function (req, res) {
   res

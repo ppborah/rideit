@@ -1,13 +1,18 @@
 const blogModel = require("../models/blogModel");
-const { uploadFile } = require('../aws/awsUpload')
+const { uploadFile } = require("../aws/awsUpload");
+
+//=========================================== Create Blog ==============================================================================================
 
 const createBlog = async function (req, res) {
   try {
     let files = req.files;
     let data = { ...req.body };
+    data.userId = req.userId;
 
-    let blogImageUrl  = await uploadFile(files[0])
-    data.blogImage = blogImageUrl
+    if (files.length) {
+      let blogImageUrl = await uploadFile(files[0]);
+      data.blogImage = blogImageUrl;
+    }
 
     let blogCreated = await blogModel.create(data);
     res.status(201).send({ status: true, data: blogCreated });
@@ -16,17 +21,30 @@ const createBlog = async function (req, res) {
   }
 };
 
-const feed = async function (req, res) {
-  let data = await blogModel.find({ isDeleted: false });
-  res.status(200).send({ status: true, data: data });
+//=========================================== Get Blog(Feed) ===========================================================================================
+
+const getFeed = async function (req, res) {
+  let blogDoc = await blogModel.find({ isDeleted: false });
+  res.status(200).send({ status: true, data: blogDoc });
 };
 
-const getBlog = async function (req, res) {
-  let blogId = req.params.blog
+//=========================================== Get Blog(byId) ===========================================================================================
 
-  let data = await blogModel.findById(blogId)
-  res.status(200).send({ status: true, data: data });
+const getBlogById = async function (req, res) {
+  let blogId = req.params.blog;
+
+  let blogDoc = await blogModel.find({ _id: blogId, isDeleted: false });
+  res.status(200).send({ status: true, data: blogDoc });
 };
+
+//=========================================== Get Blog(Own) ============================================================================================
+
+const getBlogOwn = async function (req, res) {
+  let blogDoc = await blogModel.find({ userId: req.userId, isDeleted: false });
+  res.status(200).send({ status: true, data: blogDoc });
+};
+
+//=========================================== Like Blog ================================================================================================
 
 const likeBlog = async function (req, res) {
   let blogId = req.params.blogId;
@@ -39,34 +57,46 @@ const likeBlog = async function (req, res) {
     blog.likes[index] = "";
   }
   await blog.save();
+  res.status(200).send();
 };
+
+//=========================================== Update Blog ==============================================================================================
 
 const updateBlog = async function (req, res) {
   try {
     let blogId = req.params.blogId;
     let data = req.body;
+    let files = req.files;
 
     const { heading, description } = data;
 
-    let blogDoc = await blogModel.find({ _id: blogId });
+    let blogDoc = await blogModel.find({ userId: req.userId, blogId: blogId });
 
     if (data.hasOwnProperty("heading")) {
       blogDoc.heading = heading;
     }
+
     if (data.hasOwnProperty("description")) {
       blogDoc.description = description;
+    }
+
+    if (files.length) {
+      let blogImageUrl = await uploadFile(files[0]);
+      blogDoc.blogImage = blogImageUrl;
     }
 
     await blogDoc.save();
     res.status(200).send({
       status: true,
-      message: "Updated successful",
+      message: "Updated successfully!",
       data: blogDoc,
     });
   } catch (err) {
     res.status(500).send({ msg: "Internal Server Error", error: err.message });
   }
 };
+
+//=========================================== Delete Blog ==============================================================================================
 
 const deleteBlog = async function (req, res) {
   try {
@@ -86,4 +116,14 @@ const deleteBlog = async function (req, res) {
   }
 };
 
-module.exports = { createBlog, feed, getBlog, likeBlog, updateBlog, deleteBlog };
+//======================================================================================================================================================
+
+module.exports = {
+  createBlog,
+  getFeed,
+  getBlogById,
+  getBlogOwn,
+  likeBlog,
+  updateBlog,
+  deleteBlog,
+};
