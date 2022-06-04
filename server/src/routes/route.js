@@ -10,6 +10,7 @@ const {
 const {
   createBlog,
   getBlog,
+  feed,
   likeBlog,
   updateBlog,
   deleteBlog,
@@ -18,23 +19,41 @@ const {
 const router = express.Router();
 
 // user APIs
+
+//register a user
 router.post("/create-user", createUser);
+
+//login user
 router.post("/login-user", loginUser);
+
+//fetch user profile
 router.get("/:userName", authentication, authorization, getUser);
-router.post(
-  "/update-user/:userName",
-  authentication,
-  authorization,
-  updateUserProfile
-);
+
+//update user profile
+router.post("/update-user/:userName", authentication, authorization, updateUserProfile);
+
+//delete user profile
 router.delete("/:userName", authentication, authorization, deleteUser);
 
 // blog APIs
+
+//create blog
 router.post("/create-blog", authentication, authorization, createBlog);
+
+//like a blog
 router.post("/like-blog", authentication, likeBlog);
-router.get("/", getBlog);
-router.post("/update-blog", authentication, authorization, updateBlog);
-router.delete("/delete-blog", authentication, authorization, deleteBlog);
+
+//fetch a blog
+router.get("/:blogId", getBlog);
+
+//fetch all blogs
+router.get("/", feed);
+
+//update a blog
+router.post("/:blogId", authentication, authorization, updateBlog);
+
+//delete a blog
+router.delete("/:blogId", authentication, authorization, deleteBlog);
 
 router.all("/**", function (req, res) {
   res

@@ -17,7 +17,12 @@ const blogSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    image: String,
+    blogImage: {
+      type: String
+    },
+    likes: {
+      type: [String]
+    }
   },
   {
     timestamps: true,
