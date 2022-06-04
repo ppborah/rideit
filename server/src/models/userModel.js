@@ -27,11 +27,11 @@ const userSchema = new mongoose.Schema(
     },
     profileImage: String,
     bio: String,
-    isDeleted: true,
+    isDeleted: Boolean,
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model("Blog", userSchema);
+module.exports = mongoose.model("User", userSchema);

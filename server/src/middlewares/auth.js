@@ -59,7 +59,7 @@ const authorization = async function (req, res, next) {
   try {
     let userName = req.params.userName;
 
-    let userId = await userModel.findOne({ userName: userName }); 
+    let userId = await userModel.findOne({ userName: userName });
     //📌 AUTHORIZATION:
     if (req.userId.toString() !== userId.toString()) {
       return res.status(403).send({
