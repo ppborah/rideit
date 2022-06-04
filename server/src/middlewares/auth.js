@@ -53,17 +53,18 @@ const authentication = async function (req, res, next) {
   }
 };
 
-//=========================================== authorisation ============================================================================================
+//=========================================== authoriZation ============================================================================================
 
-const authorisation = async function (req, res, next) {
+const authorization = async function (req, res, next) {
   try {
-    let userId = req.params.userId;
+    let userName = req.params.userName;
 
-    //📌 AUTHORISATION:
-    if (req.userId !== userId) {
+    let userId = await userModel.findOne({ userName: userName }); 
+    //📌 AUTHORIZATION:
+    if (req.userId.toString() !== userId.toString()) {
       return res.status(403).send({
         status: false,
-        message: `Authorisation failed; You are logged in as ${req.userId}, not as ${userId}`,
+        message: `Authorization failed; You are logged in as ${req.userId}, not as ${userId}`,
       });
     }
 
@@ -79,4 +80,4 @@ const authorisation = async function (req, res, next) {
 
 //======================================================================================================================================================
 
-module.exports = { authentication, authorisation };
+module.exports = { authentication, authorization };
