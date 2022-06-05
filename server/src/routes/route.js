@@ -28,7 +28,7 @@ router.post("/create-user", createUser);
 router.post("/login-user", loginUser);
 
 //fetch user profile
-router.get("/:userName", authentication, authorisation, getUser);
+router.get("/:userId", authentication, authorisation, getUser);
 
 //update user profile
 router.post(

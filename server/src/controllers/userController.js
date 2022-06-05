@@ -87,11 +87,12 @@ const loginUser = async function (req, res) {
 const getUser = async (req, res) => {
   try {
     let userName = req.params.userName;
+    let userId;
+    if(!userName) {
+     userId = req.body.userId
+    }
 
-    let getUserDoc = await userModel.findOne({
-      userName: userName,
-      isDeleted: false,
-    });
+    let getUserDoc = await userModel.findOne({ $or: [{userName: userName}, {_id: userId}] });
     if (!getUserDoc)
       return res
         .status(404)
