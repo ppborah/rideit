@@ -24,6 +24,10 @@ const blogSchema = new mongoose.Schema(
     likes: {
       type: [String],
     },
+    isDeleted: {
+      type: Boolean,
+      default: false
+    }
   },
   {
     timestamps: true,
