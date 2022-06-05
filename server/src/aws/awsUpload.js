@@ -1,4 +1,5 @@
 const AWS = require("aws-sdk");
+require('dotenv').config()
 
 AWS.config.update({
   accessKeyId: process.env.ACCESSKEYID,
@@ -16,11 +17,12 @@ const uploadFile = async (files) => {
       Key: "Geeky/Blog-Management/" + files.originalname,
       Body: files.buffer,
     };
-
+    
     s3.upload(uploadParams, function (err, data) {
       if (err) {
         return reject({ error: err });
       }
+      
       return resolve(data.Location);
     });
   });
