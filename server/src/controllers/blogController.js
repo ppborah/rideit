@@ -8,23 +8,29 @@ const createBlog = async function (req, res) {
     let files = req.files;
     let data = { ...req.body };
     data.userId = req.userId;
-    
+
     if (files.length > 0) {
       let blogImageUrl = await uploadFile(files[0]);
       data.blogImage = blogImageUrl;
     }
-    
+
     let blogCreated = await blogModel.create(data);
     res.status(201).send({ status: true, data: blogCreated });
   } catch (err) {
-    res.status(500).send({ status: false, message: "Internal Server Error", error: err.message });
+    res
+      .status(500)
+      .send({
+        status: false,
+        message: "Internal Server Error",
+        error: err.message,
+      });
   }
 };
 
 //=========================================== Get Blog(Feed) ===========================================================================================
 
 const getFeed = async function (req, res) {
-  let blogDoc = await blogModel.find({ isDeleted: false }).populate('userId');
+  let blogDoc = await blogModel.find({ isDeleted: false }).populate("userId");
 
   res.status(200).send({ status: true, data: blogDoc });
 };
@@ -77,7 +83,7 @@ const updateBlog = async function (req, res) {
       blogDoc.heading = heading;
     }
 
-    if (data.hasOwnProperty("")) {
+    if (data.hasOwnProperty("description")) {
       blogDoc.description = description;
     }
 

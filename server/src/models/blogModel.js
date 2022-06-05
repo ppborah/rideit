@@ -5,7 +5,7 @@ const blogSchema = new mongoose.Schema(
   {
     userId: {
       type: ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
     heading: {
@@ -19,11 +19,11 @@ const blogSchema = new mongoose.Schema(
       trim: true,
     },
     blogImage: {
-      type: String
+      type: String,
     },
     likes: {
-      type: [String]
-    }
+      type: [String],
+    },
   },
   {
     timestamps: true,
