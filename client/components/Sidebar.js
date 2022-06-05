@@ -7,10 +7,10 @@ import Link from "next/link";
 
 const Sidebar = () => {
   return (
-    <div className="flex flex-col bg-blue-500 shadow-lg fixed top-0 left-0 h-96 w-16 my-5 mx-2 rounded-2xl">
+    <div className="flex flex-col bg-blue-500 shadow-lg fixed top-0 left-0 h-96 w-20 my-5 mx-2 rounded-2xl">
       <SidebarIcon icon={<AiOutlineHome />} linkedto="/" />
-      <SidebarIcon icon={<CgProfile />} linkedto="/neeraj01" />
-      <SidebarIcon icon={<AiTwotoneEdit />} linkedto="/" />
+      <SidebarIcon icon={<CgProfile />} linkedto="/" />
+      <SidebarIcon icon={<AiTwotoneEdit />} linkedto="/admin/" />
       <SidebarIcon icon={<BiLogIn />} linkedto="/" />
     </div>
   );
@@ -19,7 +19,7 @@ const Sidebar = () => {
 const SidebarIcon = ({ icon, linkedto }) => (
   <Link href={linkedto}>
     <a
-      className="transition-all duration-300 ease-linear text-white relative flex items-center justify-center h-12 w-12 mt-4 mb-2 mx-auto shadow-lg bg-blue-700
+      className="transition-all duration-200 ease-linear text-white relative flex items-center justify-center h-12 w-12 mt-4 mb-2 mx-auto shadow-lg bg-blue-700
   rounded-3xl hover:bg-blue-800 hover:rounded-xl"
     >
       {icon}

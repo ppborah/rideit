@@ -1,40 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
+import ReactHtmlParser from "react-html-parser";
+import he from "he";
 
-export async function getStaticProps({ params }) {
-  const { user, blogId } = params;
-
-  let blog;
-  let path;
-
-  const blogRef = firestore.collection("blogs").doc(slug);
-  blog = blogToJSON(await blogRef.get());
-  path = blogRef.path;
-  if (blog.createdAt === 0) {
-    return {
-      notFound: true,
-    };
-  }
-
+export async function getServerSideProps(context) {
   return {
-    props: { blog, path },
+    props: {
+      blog: context.query, //pass it to the page props
+    },
   };
 }
 
-const UserProfile = () => {
+const Blog = (props) => {
+  const wordCount = props.blog.description.trim().split(/\s+/g).length;
+  const readingTime = Math.ceil(wordCount / 200);
+
   return (
-    <div className="border-2 border-black p-4 flex flex-col items-start w-full">
+    <div className="p-4 flex flex-col items-center container w-full h-max-content m-5 ml-28 border-2 border-black rounded-xl">
       <p className="m-0 text-md text-gray-600 self-start">
-        {createdAt.toLocaleString("en-US", {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-        })}
+        {props.blog.createdAt}
         {readingTime > 1
           ? ` - ${readingTime} minutes to read`
           : ` - ${readingTime} minute to read`}
       </p>
+      <h2 className="text-2xl font-bold m-2">{props.blog.heading}</h2>
+      <img className="rounded-xl mb-4" src={props.blog.blogImage} />
+      {ReactHtmlParser(he.decode(props.blog.description))}
     </div>
   );
 };
 
-export default UserProfile;
+export default Blog;
