@@ -35,10 +35,11 @@ const login = () => {
             }),
           });
           const json = await response.json();
-          console.log(json)
+          console.log(json);
           if (json.success) {
             // Save the auth token and redirect
             localStorage.setItem("token", json.data.token);
+            localStorage.setItem("user", json.data.userId);
             router.push("/");
           } else {
             toast.error("Invalid credentials");
