@@ -9,7 +9,7 @@ const Sidebar = () => {
   return (
     <div className="flex flex-col bg-blue-500 shadow-lg fixed top-0 left-0 h-96 w-16 my-5 mx-2 rounded-2xl">
       <SidebarIcon icon={<AiOutlineHome />} linkedto="/" />
-      <SidebarIcon icon={<CgProfile />} linkedto="/asonfoh" />
+      <SidebarIcon icon={<CgProfile />} linkedto="/neeraj01" />
       <SidebarIcon icon={<AiTwotoneEdit />} linkedto="/" />
       <SidebarIcon icon={<BiLogIn />} linkedto="/" />
     </div>
