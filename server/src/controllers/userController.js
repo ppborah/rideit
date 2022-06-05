@@ -18,7 +18,7 @@ const createUser = async (req, res) => {
     if (checkEmail)
       return res
         .status(400)
-        .send({ status: false, message: "Email already exist" });
+        .send({ success: false, message: "Email already exist" });
 
     //getting the AWS-S3 link after uploading the user's profileImage
     if (files && files.length > 0) {
@@ -28,13 +28,13 @@ const createUser = async (req, res) => {
 
     let getUserDoc = await userModel.create(data);
     res.status(200).send({
-      status: true,
+      success: true,
       message: "User created successfully",
       data: getUserDoc,
     });
   } catch (err) {
     res.status(500).send({
-      status: false,
+      success: false,
       message: "Internal server error",
       error: err.message,
     });
@@ -55,7 +55,7 @@ const loginUser = async function (req, res) {
     if (!user) {
       return res
         .status(404)
-        .send({ status: false, message: "User does not exist" });
+        .send({ success: false, message: "User does not exist" });
     }
 
     // password checking
@@ -64,7 +64,7 @@ const loginUser = async function (req, res) {
     if (!actualPassWord)
       return res
         .status(400)
-        .send({ status: false, message: "Incorrect password" });
+        .send({ success: false, message: "Incorrect password" });
 
     // Token Generation
     let token = jwt.sign({ userId: user._id }, "Geekybytes", {
@@ -73,12 +73,12 @@ const loginUser = async function (req, res) {
 
     res.setHeader("authToken", token);
     res.status(200).send({
-      status: true,
+      success: true,
       message: "User login successfully",
       data: { userId: user._id, token: token },
     });
   } catch (err) {
-    res.status(500).send({ status: false, error: err.message });
+    res.status(500).send({ success: false, error: err.message });
   }
 };
 
@@ -95,14 +95,14 @@ const getUser = async (req, res) => {
     if (!getUserDoc)
       return res
         .status(404)
-        .send({ status: false, message: "User does not exist" });
+        .send({ success: false, message: "User does not exist" });
 
     res
       .status(200)
-      .send({ status: true, message: "User profile", data: getUserDoc });
+      .send({ success: true, message: "User profile", data: getUserDoc });
   } catch (err) {
     res.status(500).send({
-      status: false,
+      success: false,
       message: "Internal server error",
       error: err.message,
     });
@@ -137,20 +137,20 @@ const updateUser = async (req, res) => {
       if (checkEmail)
         return res
           .status(400)
-          .send({ status: false, message: "Email already exist" });
+          .send({ success: false, message: "Email already exist" });
     }
 
     let updateUser = await User.findOneAndUpdate({ userName: userName }, data, {
       new: true,
     });
     res.status(200).send({
-      status: true,
+      success: true,
       message: "User profile updated",
       data: updateUser,
     });
   } catch (err) {
     res.status(500).send({
-      status: false,
+      success: false,
       message: "Internal server error",
       error: err.message,
     });
@@ -170,7 +170,7 @@ const deleteUser = async (req, res) => {
     );
   } catch (err) {
     res.status(500).send({
-      status: false,
+      success: false,
       message: "Internal server error",
       error: err.message,
     });
