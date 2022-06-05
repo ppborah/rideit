@@ -9,6 +9,7 @@ const app = express();
 const multer = require("multer");
 
 app.use(cors());
+app.options("*", cors())
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
