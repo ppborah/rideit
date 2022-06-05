@@ -3,11 +3,12 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const signup = () => {
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().required("Required"),
-    username: Yup.string().required("Required"),
+    userName: Yup.string().required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
@@ -18,7 +19,7 @@ const signup = () => {
     <div className="h-screen w-screen flex justify-center bg-blue-300">
       <Formik
         validationSchema={ValidationSchema}
-        initialValues={{ name: "", username: "", email: "", password: "" }}
+        initialValues={{ name: "", userName: "", email: "", password: "" }}
         onSubmit={async (values) => {
           try {
             if (values.password.length < 8)
@@ -32,15 +33,15 @@ const signup = () => {
               },
               body: JSON.stringify({
                 name: values.name,
-                username: values.username,
+                userName: values.userName,
                 email: values.email,
                 password: values.password,
               }),
             });
             const json = await response.json();
-            if (json.sucess) {
-             
-              history.push("/");
+            if (json.success) {
+              toast.success("User created successfully");
+              useRouter().push("/");
             } else {
               alert(json.error);
             }
@@ -61,7 +62,7 @@ const signup = () => {
               placeholder="Enter Your Name..."
             />
             <InputField
-              name="username"
+              name="userName"
               label="Username"
               type="text"
               placeholder="Enter Your Username..."
