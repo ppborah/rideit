@@ -2,6 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 const login = () => {
   const ValidationSchema = Yup.object().shape({
@@ -16,8 +17,28 @@ const login = () => {
       <Formik
         validationSchema={ValidationSchema}
         initialValues={{ email: "", password: "" }}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={async (values) => {
+          if (values.password.length < 8)
+            return toast.error("password must be at least 8 characters");
+
+          const response = await fetch("http://localhost:5000/login-user", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: values.email,
+              password: values.password,
+            }),
+          });
+          const json = await response.json();
+          if (json.success) {
+            // Save the auth token and redirect
+            localStorage.setItem("token", json.authtoken);
+            history.push("/");
+          } else {
+            toast.error("Invalid credentials");
+          }
         }}
         validateOnMount={true}
       >
@@ -36,7 +57,10 @@ const login = () => {
               type="password"
               placeholder="Enter Your Password..."
             />
-            <button disabled={isSubmitting} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl w-1/2">
+            <button
+              disabled={isSubmitting}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl w-1/2"
+            >
               Login
             </button>
             <p className="my-2">

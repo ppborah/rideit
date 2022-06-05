@@ -15,7 +15,7 @@ app.use(multer().any());
 
 mongoose
   .connect(
-    "mongodb+srv://Geekybytes:fxRyU5A33DSX4SVv@cluster0.oqivm.mongodb.net/?retryWrites=true&w=majority",
+    "mongodb+srv://Geekybytes:fxRyU5A33DSX4SVv@cluster0.oqivm.mongodb.net/Geekybytes?retryWrites=true&w=majority",
     {
       useNewUrlParser: true,
     }

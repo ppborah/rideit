@@ -2,6 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 const signup = () => {
   const ValidationSchema = Yup.object().shape({
@@ -18,8 +19,35 @@ const signup = () => {
       <Formik
         validationSchema={ValidationSchema}
         initialValues={{ name: "", username: "", email: "", password: "" }}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={async (values) => {
+          try {
+            if (values.password.length < 8)
+              return toast.error("password must be at least 8 characters");
+
+            const response = await fetch(`http://localhost:5000/create-user`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: JSON.stringify({
+                name: values.name,
+                username: values.username,
+                email: values.email,
+                password: values.password,
+              }),
+            });
+            const json = await response.json();
+            if (json.sucess) {
+             
+              history.push("/");
+            } else {
+              alert(json.error);
+            }
+          } catch (e) {
+            console.error(e);
+            toast.error("some error occured");
+          }
         }}
         validateOnMount={true}
       >
