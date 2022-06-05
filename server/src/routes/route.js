@@ -43,7 +43,7 @@ router.delete("/:userName", authentication, authorisation, deleteUser);
 
 // blog APIs
 router.get("/", getFeed);
-router.get("/:blogId", getBlogById);
+router.get("/blog/:blogId", getBlogById);
 router.get("/:userId/blogs", getBlogOwn);
 router.post("/like-blog", authentication, likeBlog);
 router.post("/create-blog", authentication, authorisation, createBlog);
