@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 
 const signup = () => {
+  const router = useRouter();
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().required("Required"),
     userName: Yup.string().required("Required"),
@@ -41,7 +42,7 @@ const signup = () => {
             const json = await response.json();
             if (json.success) {
               toast.success("User created successfully");
-              useRouter().push("/");
+              router.push("/");
             } else {
               alert(json.error);
             }

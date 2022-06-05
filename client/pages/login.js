@@ -3,8 +3,10 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const login = () => {
+  const router = useRouter();
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Required"),
     password: Yup.string()
@@ -16,7 +18,8 @@ const login = () => {
     <div className="h-screen w-screen flex justify-center bg-blue-300">
       <Formik
         validationSchema={ValidationSchema}
-        initialValues={{ email: "", password: "" }}
+        // change here
+        initialValues={{ email: "arsh1611@gmail.com", password: "arsh1611" }}
         onSubmit={async (values) => {
           if (values.password.length < 8)
             return toast.error("password must be at least 8 characters");
@@ -32,10 +35,11 @@ const login = () => {
             }),
           });
           const json = await response.json();
+          console.log(json)
           if (json.success) {
             // Save the auth token and redirect
-            localStorage.setItem("token", json.authtoken);
-            history.push("/");
+            localStorage.setItem("token", json.data.token);
+            router.push("/");
           } else {
             toast.error("Invalid credentials");
           }
