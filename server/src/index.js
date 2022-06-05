@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const route = require("./routes/route");
 const mongoose = require("mongoose");
 const cors = require('cors')
+require('dotenv').config()
 
 
 const app = express();
@@ -30,6 +31,6 @@ mongoose
 
 app.use("/", route);
 
-app.listen(process.env.PORT || 3000, function () {
-  console.log("Express app running on port " + (process.env.PORT || 3000));
+app.listen(process.env.PORT || 5000, function () {
+  console.log("Express app running on port " + (process.env.PORT || 5000));
 });
