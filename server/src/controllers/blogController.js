@@ -47,7 +47,7 @@ const getBlogById = async function (req, res) {
 //=========================================== Get Blog(Own) ============================================================================================
 
 const getBlogOwn = async function (req, res) {
-  let blogDoc = await blogModel.find({ userId: req.userId, isDeleted: false });
+  let blogDoc = await blogModel.find({ userId: req.params.userId, isDeleted: false });
   res.status(200).send({ status: true, data: blogDoc });
 };
 
