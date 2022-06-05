@@ -15,7 +15,6 @@ const {
   likeBlog,
   updateBlog,
   deleteBlog,
-  getBlogById,
 } = require("../controllers/blogController");
 
 const router = express.Router();

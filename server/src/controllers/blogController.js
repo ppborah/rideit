@@ -76,8 +76,12 @@ const updateBlog = async function (req, res) {
       blogDoc.heading = heading;
     }
 
-    if (data.hasOwnProperty("description")) {
+    if (data.hasOwnProperty("")) {
       blogDoc.description = description;
+    }
+
+    if (data.hasOwnProperty("content")) {
+      blogDoc.content = content;
     }
 
     if (files.length) {
