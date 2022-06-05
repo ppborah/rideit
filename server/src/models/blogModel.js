@@ -5,6 +5,7 @@ const blogSchema = new mongoose.Schema(
   {
     userId: {
       type: ObjectId,
+      ref: 'User',
       required: true,
     },
     heading: {

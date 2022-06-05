@@ -24,7 +24,8 @@ const createBlog = async function (req, res) {
 //=========================================== Get Blog(Feed) ===========================================================================================
 
 const getFeed = async function (req, res) {
-  let blogDoc = await blogModel.find({ isDeleted: false });
+  let blogDoc = await blogModel.find({ isDeleted: false }).populate('userId');
+
   res.status(200).send({ status: true, data: blogDoc });
 };
 
