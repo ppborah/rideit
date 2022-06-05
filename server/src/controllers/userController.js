@@ -47,13 +47,15 @@ const loginUser = async function (req, res) {
     let data = req.body;
 
     const { email, password } = data;
-
+    
     // finding the user
-    let user = await userModel.findOne({ email: email, isDeleted: false });
-    if (!user)
+    let user = await userModel.findOne({ email });
+    console.log(email, data)
+    if (!user) {
       return res
         .status(404)
         .send({ status: false, message: "User does not exist" });
+    }
 
     // password checking
     let actualPassWord = await bcrypt.compare(password, user.password);

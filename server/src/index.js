@@ -2,9 +2,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const route = require("./routes/route");
 const mongoose = require("mongoose");
+const cors = require('cors')
+
+
 const app = express();
 const multer = require("multer");
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -15,7 +19,7 @@ app.use(multer().any());
 
 mongoose
   .connect(
-    "mongodb+srv://Geekybytes:fxRyU5A33DSX4SVv@cluster0.oqivm.mongodb.net/?retryWrites=true&w=majority",
+    "mongodb+srv://Geekybytes:fxRyU5A33DSX4SVv@cluster0.oqivm.mongodb.net/Geekybytes?retryWrites=true&w=majority",
     {
       useNewUrlParser: true,
     }
