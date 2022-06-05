@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import Sidebar from "../components/Sidebar";
 import { useRouter } from "next/router";
+import {Toaster} from 'react-hot-toast'
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -10,6 +11,7 @@ function MyApp({ Component, pageProps }) {
     <>
       {pathname === "/login" || pathname === "/signup" ? null : <Sidebar />}
       <Component {...pageProps} />
+      <Toaster />
     </>
   );
 }
