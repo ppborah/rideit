@@ -71,7 +71,7 @@ const loginUser = async function (req, res) {
       expiresIn: "1d",
     });
 
-    res.setHeader("Authorization", token);
+    res.setHeader("authToken", token);
     res.status(200).send({
       status: true,
       message: "User login successfully",
