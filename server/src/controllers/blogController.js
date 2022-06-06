@@ -13,7 +13,7 @@ const createBlog = async function (req, res) {
       let blogImageUrl = await uploadFile(files[0]);
       data.blogImage = blogImageUrl;
     }
-    
+
     let blogCreated = await blogModel.create(data);
     res.status(201).send({ status: true, data: blogCreated });
   } catch (err) {
@@ -38,7 +38,7 @@ const getFeed = async function (req, res) {
 const getBlogById = async function (req, res) {
   let blogId = req.params.blogId;
 
-  let blogDoc = await blogModel.find({ _id: blogId });
+  let blogDoc = await blogModel.find({ _id: blogId, isDeleted: false });
   res.status(200).send({ status: true, data: blogDoc });
 };
 
@@ -49,11 +49,6 @@ const getBlogOwn = async function (req, res) {
     userId: req.params.userId,
     isDeleted: false,
   });
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
   res.status(200).send({ status: true, data: blogDoc });
 };
 
