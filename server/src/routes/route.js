@@ -47,7 +47,7 @@ router.get("/blog/:blogId", getBlogById);
 router.get("/:userId/blogs", getBlogOwn);
 router.post("/like-blog", authentication, likeBlog);
 router.post("/create-blog", authentication, authorisation, createBlog);
-router.post("/:blogId", authentication, authorisation, updateBlog);
+router.post("/:blogId/:userName", authentication, authorisation, updateBlog);
 router.delete("/:blogId/:userId", authentication, authorisation, deleteBlog);
 
 router.all("/**", function (req, res) {
