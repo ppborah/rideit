@@ -92,7 +92,7 @@ const updateBlog = async function (req, res) {
       blogDoc.content = content;
     }
 
-    if (files.length) {
+    if (files?.length) {
       let blogImageUrl = await uploadFile(files[0]);
       blogDoc.blogImage = blogImageUrl;
     }
