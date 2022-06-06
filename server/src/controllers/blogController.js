@@ -9,7 +9,7 @@ const createBlog = async function (req, res) {
     let data = { ...req.body };
     data.userId = req.userId;
 
-    if (files.length > 0) {
+    if (files?.length) {
       let blogImageUrl = await uploadFile(files[0]);
       data.blogImage = blogImageUrl;
     }
@@ -17,13 +17,11 @@ const createBlog = async function (req, res) {
     let blogCreated = await blogModel.create(data);
     res.status(201).send({ status: true, data: blogCreated });
   } catch (err) {
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Internal Server Error",
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Internal Server Error",
+      error: err.message,
+    });
   }
 };
 
@@ -47,7 +45,10 @@ const getBlogById = async function (req, res) {
 //=========================================== Get Blog(Own) ============================================================================================
 
 const getBlogOwn = async function (req, res) {
-  let blogDoc = await blogModel.find({ userId: req.params.userId, isDeleted: false });
+  let blogDoc = await blogModel.find({
+    userId: req.params.userId,
+    isDeleted: false,
+  });
   res.status(200).send({ status: true, data: blogDoc });
 };
 
