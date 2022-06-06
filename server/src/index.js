@@ -2,15 +2,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const route = require("./routes/route");
 const mongoose = require("mongoose");
-const cors = require('cors')
-require('dotenv').config()
-
+const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 const multer = require("multer");
 
 app.use(cors());
-app.options("*", cors())
+app.options("*", cors());
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -31,6 +30,6 @@ mongoose
 
 app.use("/", route);
 
-app.listen(process.env.PORT || 5000, function () {
-  console.log("Express app running on port " + (process.env.PORT || 5000));
+app.listen(process.env.PORT || 4000, function () {
+  console.log("Express app running on port " + (process.env.PORT || 4000));
 });

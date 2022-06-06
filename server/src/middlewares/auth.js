@@ -15,9 +15,6 @@ const authentication = async function (req, res, next) {
       });
     }
 
-    // This👇 is written here to avoid internal server error (if token is not present)
-    token = token.split(" ")[1];
-
     jwt.verify(
       token,
       "Geekybytes",
@@ -59,11 +56,13 @@ const authorisation = async function (req, res, next) {
   try {
     let userName = req.params.userName;
     let userId;
-    if(!userName) {
-     userId = req.body.userId
+    if (!userName) {
+      userId = req.body.userId;
     }
 
-    let userDoc = await userModel.findOne({ $or: [{userName: userName}, {_id: userId}] });
+    let userDoc = await userModel.findOne({
+      $or: [{ userName: userName }, { _id: userId }],
+    });
     if (req.userId !== userDoc._id.toString()) {
       return res.status(403).send({
         status: false,

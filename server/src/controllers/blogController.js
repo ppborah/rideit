@@ -9,7 +9,7 @@ const createBlog = async function (req, res) {
     let data = { ...req.body };
     data.userId = req.userId;
 
-    if (files.length > 0) {
+    if (files?.length) {
       let blogImageUrl = await uploadFile(files[0]);
       data.blogImage = blogImageUrl;
     }
@@ -17,13 +17,11 @@ const createBlog = async function (req, res) {
     let blogCreated = await blogModel.create(data);
     res.status(201).send({ status: true, data: blogCreated });
   } catch (err) {
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Internal Server Error",
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Internal Server Error",
+      error: err.message,
+    });
   }
 };
 
@@ -38,16 +36,24 @@ const getFeed = async function (req, res) {
 //=========================================== Get Blog(byId) ===========================================================================================
 
 const getBlogById = async function (req, res) {
-  let blogId = req.params.blog;
+  let blogId = req.params.blogId;
 
-  let blogDoc = await blogModel.find({ _id: blogId, isDeleted: false });
+  let blogDoc = await blogModel.find({ _id: blogId });
   res.status(200).send({ status: true, data: blogDoc });
 };
 
 //=========================================== Get Blog(Own) ============================================================================================
 
 const getBlogOwn = async function (req, res) {
-  let blogDoc = await blogModel.find({ userId: req.params.userId, isDeleted: false });
+  let blogDoc = await blogModel.find({
+    userId: req.params.userId,
+    isDeleted: false,
+  });
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   res.status(200).send({ status: true, data: blogDoc });
 };
 
