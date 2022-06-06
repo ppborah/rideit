@@ -54,21 +54,24 @@ const authentication = async function (req, res, next) {
 
 const authorisation = async function (req, res, next) {
   try {
-    let userName = req.params.userName;
-    let userId;
-    if (!userName) {
-      userId = req.body.userId;
+    let userId = req.params.userId;
+
+    // if user does not exist
+    let isUserExist = await userModel.findById(userId);
+    if (!isUserExist) {
+      return res
+        .status(404)
+        .send({ status: false, msg: "user does not exist" });
     }
 
-    let userDoc = await userModel.findOne({
-      $or: [{ userName: userName }, { _id: userId }],
-    });
-    if (req.userId !== userDoc._id.toString()) {
+    //📌 AUTHORISATION:
+    if (req.userId !== userId) {
       return res.status(403).send({
         status: false,
-        message: `Authorisation failed`,
+        message: `Authorisation failed; You are logged in as ${req.userId}, not as ${userId}`,
       });
     }
+
     next();
   } catch (err) {
     res.status(500).send({
