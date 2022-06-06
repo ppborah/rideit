@@ -36,9 +36,9 @@ const getFeed = async function (req, res) {
 //=========================================== Get Blog(byId) ===========================================================================================
 
 const getBlogById = async function (req, res) {
-  let blogId = req.params.blog;
+  let blogId = req.params.blogId;
 
-  let blogDoc = await blogModel.find({ _id: blogId, isDeleted: false });
+  let blogDoc = await blogModel.find({ _id: blogId });
   res.status(200).send({ status: true, data: blogDoc });
 };
 
