@@ -78,7 +78,10 @@ const updateBlog = async function (req, res) {
 
     const { heading, description } = data;
 
-    let blogDoc = await blogModel.find({ userId: req.userId, blogId: blogId });
+    let blogDoc = await blogModel.findOne({
+      userId: req.userId,
+      blogId: blogId,
+    });
 
     if (data.hasOwnProperty("heading")) {
       blogDoc.heading = heading;
