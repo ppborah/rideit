@@ -117,14 +117,19 @@ const deleteBlog = async function (req, res) {
   try {
     let blogId = req.params.blogId;
 
-    await blogModel.findOneAndUpdate(
+    const blogDoc = await blogModel.findOneAndUpdate(
       {
         _id: blogId,
+        isDeleted: false,
       },
       {
         isDeleted: true,
       }
     );
+
+    if (!blogDoc) {
+      return res.status(404).send({ status: false, message: "blog not found" });
+    }
     res.status(200).send();
   } catch (err) {
     res.status(500).send({ msg: "Internal Server Error", error: err.message });
