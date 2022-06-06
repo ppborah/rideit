@@ -13,7 +13,7 @@ const createBlog = async function (req, res) {
       let blogImageUrl = await uploadFile(files[0]);
       data.blogImage = blogImageUrl;
     }
-
+    
     let blogCreated = await blogModel.create(data);
     res.status(201).send({ status: true, data: blogCreated });
   } catch (err) {
