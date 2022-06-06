@@ -5,7 +5,7 @@ const userModel = require("../models/userModel");
 
 const authentication = async function (req, res, next) {
   try {
-    let token = req.headers.authtoken;
+    let token = req.body.authToken;
 
     // if no token found
     if (!token) {
