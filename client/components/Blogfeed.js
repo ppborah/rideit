@@ -4,10 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { AiFillDelete } from "react-icons/ai";
+import toast from "react-hot-toast"
 
-const Blogfeed = ({ blogs }) => {
+const Blogfeed = ({ blogs , getBlogs}) => {
   return blogs.length > 0 ? (
-    blogs.map((blog) => <BlogItem key={blog._id} blog={blog} />)
+    blogs.map((blog) => <BlogItem getBlogs={getBlogs}  key={blog._id} blog={blog} />)
   ) : (
     <div>
       <p className="font-bold ">No blogs yet</p>
@@ -15,7 +16,7 @@ const Blogfeed = ({ blogs }) => {
   );
 };
 
-const BlogItem = ({ blog }) => {
+const BlogItem = ({ blog, getBlogs }) => {
   const router = useRouter();
   return (
     <div className=" flex flex-col items-start w-1/4 m-5 p-3 border-4 border-black rounded-xl shadow-1xl hover:shadow-2xl transition-all duration-300 ease-linear">
@@ -61,23 +62,31 @@ const BlogItem = ({ blog }) => {
           <>
             <h3 className="text-xl font-bold flex items-center">
               <Link href={`admin/${blog._id}`}>
-                <AiTwotoneEdit />
+                <a>
+                  <AiTwotoneEdit />
+                </a>
               </Link>
             </h3>
             <h3 className="text-xl font-bold flex items-center">
               <button
-                onClick={() => {
+                onClick={async () => {
                   if (
                     window.confirm("Are you sure you wish to delete this item?")
                   ) {
-                    fetch(`http://localhost:5000/${blog._id}`, {
-                      method: "DELETE",
-                    })
-                      .then((res) => res.json())
-                      .then((data) => {
-                        console.log(data);
-                        router.push("/admin");
-                      });
+                    const response = await fetch(
+                      `http://localhost:5000/${blog._id}/${blog.userId}`,
+                      {
+                        method: "DELETE",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                          authToken: localStorage.getItem("token"),
+                        }),
+                      }
+                    );
+                    getBlogs();
+                    toast.success("Blog deleted successfully");
                   }
                 }}
               >

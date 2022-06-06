@@ -16,7 +16,6 @@ const CurrentUserBlogs = () => {
       }
     );
     const data = await res.json();
-    console.log(data);
     setBlogs(data.data);
   };
 
@@ -26,48 +25,52 @@ const CurrentUserBlogs = () => {
   return (
     <div className="flex flex-col items-center container w-full h-screen m-5 ml-44">
       <div className="flex flex-wrap justify-start">
-        <Blogfeed blogs={blogs} />
+        <Blogfeed blogs={blogs} getBlogs={getBlogs} />
       </div>
       <div>
-        <Createbtn />
+        <Createbtn getBlogs={getBlogs} />
       </div>
     </div>
   );
 };
 
-const Createbtn = () => {
-//   const [title, setTitle] = useState("");
-//   //checking if title is valid
-//   const isValid = title.length < 3 && title.length < 60;
+const Createbtn = ({ getBlogs }) => {
+  const [title, setTitle] = useState("");
+  //checking if title is valid
+  const isValid = title.length < 3 && title.length < 60;
 
-//   const onSubmit = async (e) => {
-//     e.preventDefault();
-//     const token = localStorage.getItem("token");
-//     try {
-//       const response = await fetch(`http://localhost:5000/create-blog`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           userId: localStorage.getItem("user"),
-//           heading: title,
-//           description: "this is content",
-//           blogImage: " ",
-//           likes: [],
-//           isDeleted: false,
-//           authToken: token,
-//         }),
-//       });
-//       const data = await response.json();
-//       console.log(data);
-//       toast.success("Blog Created");
-//     } catch (e) {
-//       toast.error("Error");
-//       console.error(e.message);
-//     }
-//   };
-
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(`http://localhost:5000/create-blog`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authToken: token,
+        },
+        body: JSON.stringify({
+          userId: localStorage.getItem("user"),
+          heading: title,
+          description: "this is content",
+          blogImage: " ",
+          likes: [],
+          isDeleted: false,
+          authToken: token,
+        }),
+      });
+      const data = await response.json();
+      if (data.status) {
+        toast.success("Blog created successfully");
+        setTitle("");
+        getBlogs();
+      } else {
+        return toast.error("Something went wrong");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div>
       <form onSubmit={onSubmit} className="flex flex-col">

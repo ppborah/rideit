@@ -19,7 +19,7 @@ const login = () => {
       <Formik
         validationSchema={ValidationSchema}
         // change here
-        initialValues={{ email: "arsh1611@gmail.com", password: "arsh1611" }}
+        initialValues={{ email: "", password: "" }}
         onSubmit={async (values) => {
           if (values.password.length < 8)
             return toast.error("password must be at least 8 characters");
@@ -35,7 +35,6 @@ const login = () => {
             }),
           });
           const json = await response.json();
-          console.log(json);
           if (json.success) {
             // Save the auth token and redirect
             localStorage.setItem("token", json.data.token);

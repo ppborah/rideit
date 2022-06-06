@@ -9,9 +9,8 @@ const Sidebar = () => {
   return (
     <div className="flex flex-col bg-blue-500 shadow-lg fixed top-0 left-0 h-96 w-20 my-5 mx-2 rounded-2xl">
       <SidebarIcon icon={<AiOutlineHome />} linkedto="/" />
-      <SidebarIcon icon={<CgProfile />} linkedto="/" />
       <SidebarIcon icon={<AiTwotoneEdit />} linkedto="/admin/" />
-      <SidebarIcon icon={<BiLogIn />} linkedto="/" />
+      <SidebarIcon icon={<BiLogIn />} linkedto="/login" />
     </div>
   );
 };

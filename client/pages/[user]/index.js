@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Blogfeed from "../../components/Blogfeed";
 
 const Profile = (props) => {
   const [blogs, setBlogs] = useState([]);
@@ -7,8 +8,13 @@ const Profile = (props) => {
       .then((res) => res.json())
       .then((data) => setBlogs(data));
   }, []);
-  console.log(blogs);
-  return <div className="w-screen flex h-screen justify-center"></div>;
+  return (
+    <div className="flex flex-col items-center container w-full h-screen m-5 ml-44">
+      <div className="flex flex-wrap justify-start">
+        <Blogfeed blogs={blogs} />
+      </div>
+    </div>
+  );
 };
 
 export default Profile;
