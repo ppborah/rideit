@@ -46,7 +46,7 @@ router.get("/", getFeed);
 router.get("/blog/:blogId", getBlogById);
 router.get("/:userId/blogs", getBlogOwn);
 router.post("/like-blog", authentication, likeBlog);
-router.post("/create-blog", authentication, authorisation, createBlog);
+router.post("/create-blog/:userId", authentication, authorisation, createBlog);
 router.post("/:blogId/:userId", authentication, authorisation, updateBlog);
 router.delete("/:blogId/:userId", authentication, authorisation, deleteBlog);
 
