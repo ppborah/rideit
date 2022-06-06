@@ -49,6 +49,11 @@ const getBlogOwn = async function (req, res) {
     userId: req.params.userId,
     isDeleted: false,
   });
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   res.status(200).send({ status: true, data: blogDoc });
 };
 
